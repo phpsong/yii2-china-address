@@ -1,0 +1,21 @@
+{
+  "name": "iit/yii2-china-address",
+  "type": "component",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "ilovintit",
+      "email": "ilovintit@gmail.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=5.4.0",
+    "yiisoft/yii2": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "api\\jdjos\\": ""
+    }
+  }
+}
