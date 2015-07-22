@@ -6,13 +6,14 @@
  * Time: 16:21
  */
 
-namespace iit\api\address;
+namespace iit\api\jd;
 
 
 use Yii;
 use yii\base\InvalidParamException;
 use yii\db\ActiveRecord;
 use yii\db\Connection;
+use yii\helpers\ArrayHelper;
 
 class Address extends ActiveRecord
 {
@@ -33,7 +34,7 @@ class Address extends ActiveRecord
 
     public static function getCityList($provinceId)
     {
-        return self::find()->where(['level' => 2, 'parent_id' => $provinceId])->all();
+        return self::find()->where(['level' => 2, 'parent' => $provinceId])->all();
     }
 
     public static function getCity($cityId)
@@ -43,7 +44,7 @@ class Address extends ActiveRecord
 
     public static function getCountyList($cityId)
     {
-        return self::find()->where(['level' => 3, 'parent_id' => $cityId])->all();
+        return self::find()->where(['level' => 3, 'parent' => $cityId])->all();
     }
 
     public static function getCounty($countyId)
@@ -53,7 +54,7 @@ class Address extends ActiveRecord
 
     public static function getTownList($countyId)
     {
-        return self::find()->where(['level' => 4, 'parent_id' => $countyId])->all();
+        return self::find()->where(['level' => 4, 'parent' => $countyId])->all();
     }
 
     public static function getTown($townId)
@@ -63,7 +64,21 @@ class Address extends ActiveRecord
 
     public static function getBreadCrumbs($id)
     {
+        $return = self::getBreadCrumbsInternal($id);
+        sort($return);
+        return $return;
+    }
 
+    protected static function getBreadCrumbsInternal($id)
+    {
+        $parents = [];
+        if ($address = self::findOne($id)) {
+            $parents[] = $address;
+            if ($address['parent'] != 0) {
+                $parents = ArrayHelper::merge($parents, self::getBreadCrumbsInternal($address['parent']));
+            }
+        }
+        return $parents;
     }
 
     public static function getParent($id)
