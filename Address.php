@@ -24,42 +24,42 @@ class Address extends ActiveRecord
 
     public static function getProvinceList()
     {
-        return self::find()->where(['level' => 1])->all();
+        return self::find()->where(['level' => 1])->asArray()->all();
     }
 
     public static function getProvince($provinceId)
     {
-        return self::find()->where(['level' => 1, 'id' => $provinceId])->one();
+        return self::find()->where(['level' => 1, 'id' => $provinceId])->asArray()->one();
     }
 
     public static function getCityList($provinceId)
     {
-        return self::find()->where(['level' => 2, 'parent' => $provinceId])->all();
+        return self::find()->where(['level' => 2, 'parent' => $provinceId])->asArray()->all();
     }
 
     public static function getCity($cityId)
     {
-        return self::find()->where(['level' => 2, 'id' => $cityId])->one();
+        return self::find()->where(['level' => 2, 'id' => $cityId])->asArray()->one();
     }
 
     public static function getCountyList($cityId)
     {
-        return self::find()->where(['level' => 3, 'parent' => $cityId])->all();
+        return self::find()->where(['level' => 3, 'parent' => $cityId])->asArray()->all();
     }
 
     public static function getCounty($countyId)
     {
-        return self::find()->where(['level' => 3, 'id' => $countyId])->one();
+        return self::find()->where(['level' => 3, 'id' => $countyId])->asArray()->one();
     }
 
     public static function getTownList($countyId)
     {
-        return self::find()->where(['level' => 4, 'parent' => $countyId])->all();
+        return self::find()->where(['level' => 4, 'parent' => $countyId])->asArray()->all();
     }
 
     public static function getTown($townId)
     {
-        return self::find()->where(['level' => 4, 'id' => $townId])->one();
+        return self::find()->where(['level' => 4, 'id' => $townId])->asArray()->one();
     }
 
     public static function getBreadCrumbs($id)
@@ -87,6 +87,6 @@ class Address extends ActiveRecord
         if (empty($address)) {
             throw new InvalidParamException("ID does not exist");
         }
-        return self::find()->where(['id' => $address['parent']])->one();
+        return self::find()->where(['id' => $address['parent']])->asArray()->one();
     }
 }
